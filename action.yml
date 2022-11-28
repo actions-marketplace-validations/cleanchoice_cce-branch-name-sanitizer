@@ -22,4 +22,4 @@ runs:
         fi
         branch=$(echo $branch |  tr -d '[:space:]' )
         branch=$(basename $branch)
-        echo "{branch}={$branch}" >> $GITHUB_OUTPUT
+        echo "branch=$branch" >> $GITHUB_OUTPUT

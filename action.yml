@@ -21,4 +21,5 @@ runs:
           branch=$(echo $${{ github.ref }} | tr '[:upper:]' '[:lower:]')
         fi
         branch=$(echo $branch |  tr -d '[:space:]' )
-        echo "{branch}={ $(basename $branch) }"
+        branch=$(basename $branch)
+        echo "{branch}={$branch}" >> $GITHUB_OUTPUT

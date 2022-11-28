@@ -9,4 +9,5 @@ runs:
   using: "composite"
   steps:
     - id: branch-name
+      shell: bash
       run: echo "::set-output name=branch::$(echo '${{github.event.ref}}' | sed 's/\///g' | sed 's/refs//' | sed 's/heads//' | sed 's/feat//' | sed 's/fix//' | sed 's|[.]||g' |  awk '{print tolower($0)}' | cut -c1-38  | sed 's/\-$//')"

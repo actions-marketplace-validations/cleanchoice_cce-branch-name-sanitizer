@@ -4,7 +4,7 @@ description: 'Format branch name for use in feature environment creations and mo
 outputs:
   sanitized-branch-name:
     description: "Branch name removed of custom and default branch prefixes ('feat/', 'fix/'', 'chore/', 'ref/', 'heads/', etc)"
-    value: ${{ steps.branch-name.outputs.branch }}
+    value: ${{ steps.sanitize-branch-name.outputs.branch }}
 runs:
   using: "composite"
   steps:

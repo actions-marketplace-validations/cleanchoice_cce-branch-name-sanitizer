@@ -1,0 +1,12 @@
+name: 'Branch Name Sanitizer'
+author: 'CleanChoice Energy'
+description: 'Format branch name for use in feature environment creations and more'
+outputs:
+  sanitized-branch-name:
+    description: "Branch name removed of custom and default branch prefixes ('feat/', 'fix/'', 'chore/', 'ref/', 'heads/', etc)"
+    value: ${{ steps.branch-name.outputs.branch }}
+runs:
+  using: "composite"
+  steps:
+    - id: branch-name
+      run: echo "::set-output name=branch::$(echo '${{github.event.ref}}' | sed 's/\///g' | sed 's/refs//' | sed 's/heads//' | sed 's/feat//' | sed 's/fix//' | sed 's|[.]||g' |  awk '{print tolower($0)}' | cut -c1-38  | sed 's/\-$//')"

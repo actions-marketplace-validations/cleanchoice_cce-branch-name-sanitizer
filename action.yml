@@ -8,6 +8,17 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - id: branch-name
+    # - id: branch-name
+    #   shell: bash
+    #   run: echo "{branch}={ $(echo '${{github.event.ref}}' | sed 's/\///g' | sed 's/refs//' | sed 's/heads//' | sed 's/feat//' | sed 's/fix//' | sed 's|[.]||g' |  awk '{print tolower($0)}' | cut -c1-38  | sed 's/\-$//') }" >> $GITHUB_OUTPUT
+    - id: sanitize-branch-name
       shell: bash
-      run: echo "{branch}={$(echo '${{github.event.ref}}' | sed 's/\///g' | sed 's/refs//' | sed 's/heads//' | sed 's/feat//' | sed 's/fix//' | sed 's|[.]||g' |  awk '{print tolower($0)}' | cut -c1-38  | sed 's/\-$//')}" >> $GITHUB_OUTPUT
+      run: |
+        if [ ${{ github.event_name }} == 'pull_request' ];
+        then
+          branch=$(echo $${{ github.head_ref }} | tr '[:upper:]' '[:lower:]')
+        else
+          branch=$(echo $${{ github.ref }} | tr '[:upper:]' '[:lower:]')
+        fi
+        branch=$(echo $branch |  tr -d '[:space:]' )
+        echo "{branch}=${{ $(basename $branch) }}"
